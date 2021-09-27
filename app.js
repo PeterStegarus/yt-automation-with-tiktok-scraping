@@ -1,7 +1,9 @@
+require('dotenv').config();
 const express = require("express");
 const ejs = require("ejs");
 const fs = require("fs");
-const scrape = require("./src/scrape.js");
+const scrape = require("./bin/scrape-files/scrape.js");
+const upload = require("./bin/upload-files/upload.js");
 
 const category = "cars";
 
@@ -15,6 +17,7 @@ app.use(express.static("public"));
 
 const infoTxt = "Scraper";
 let isScraping = false;
+let isUploading = false;
 
 app.get("/", function (req, res) {
     res.render("index", {
@@ -27,6 +30,14 @@ app.post("/api/scrape", async function (req, res) {
         isScraping = true;
         await scrape(category);
         isScraping = false;
+    }
+})
+
+app.post("/api/upload", async function (req, res) {
+    if (!isUploading) {
+        isUploading = true;
+        await upload(category);
+        isUploading = false;
     }
 })
 
