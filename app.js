@@ -5,8 +5,6 @@ const fs = require("fs");
 const scrape = require("./bin/scrape-files/scrape.js");
 const upload = require("./bin/upload-files/upload.js");
 
-const category = process.env.CATEGORY;
-
 const app = express();
 app.set("view engine", "ejs");
 app.use(express.static("public"));
@@ -28,15 +26,26 @@ app.get("/", function (req, res) {
 app.post("/api/scrape", async function (req, res) {
     if (!isScraping) {
         isScraping = true;
-        await scrape(category);
+        const accounts = JSON.parse(fs.readFileSync("./accounts.json"));
+        for (const acc in accounts) {
+            await scrape(accounts[acc].category);
+        }
         isScraping = false;
     }
 })
 
+var accIndex = 0;
+
 app.post("/api/upload", async function (req, res) {
+    accIndex = 0;
     if (!isUploading) {
         isUploading = true;
-        await upload(category);
+        const accounts = JSON.parse(fs.readFileSync("./accounts.json"));
+        for (accIndex in accounts) {
+            console.log(accounts[accIndex].category);
+            await upload(accounts[accIndex], accIndex);
+        }
+
         isUploading = false;
     }
 })

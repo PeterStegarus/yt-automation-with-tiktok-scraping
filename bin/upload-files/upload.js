@@ -1,11 +1,11 @@
 const fs = require("fs");
 const uploadMultipleVids = require("./upload-multiple-vids.js");
 const uploadVid = require("./upload-vid.js");
-const credentials = { email: process.env.EMAIL, pass: process.env.PASS, recoveryemail: process.env.RECOVERY_EMAIL }
 const vid = require("../objects/scraped-vid.js");
 
-async function upload(category) {
-    console.log("uploading");
+async function upload(acc, accIndex) {
+    credentials = { email: acc.email, pass: acc.pass, recoveryemail: acc.recoveryEmail };
+    category = acc.category;
     const rawLogs = fs.readFileSync(`${process.env.VIDEOS_PATH}/${category}/logs.txt`);
     const logVids = JSON.parse(rawLogs);
     const rawIndex = fs.readFileSync(`${process.env.VIDEOS_PATH}/${category}/upload-index.txt`);
@@ -13,12 +13,13 @@ async function upload(category) {
     const localVidsNo = logVids.length;
 
     for (let i = 0; i < process.env.UPLOAD_NUMBER && index < localVidsNo; ++i) {
-        if (uploadVid(credentials, logVids[index])) {
+        const statusResult = await uploadVid(credentials, logVids[index], category);
+        if (statusResult) {
             logVids[index].uploaded = true;
         }
     }
 
-    
+
     index += parseInt(process.env.UPLOAD_NUMBER);
     fs.writeFileSync(`${process.env.VIDEOS_PATH}/${category}/upload-index.txt`, index.toString());
     fs.writeFileSync(`${process.env.VIDEOS_PATH}/${category}/logs.txt`, JSON.stringify(logVids));

@@ -7,15 +7,15 @@ const vid = require("../objects/scraped-vid.js");
 const { raw } = require("express");
 
 async function scrapeInit(category) {
-    console.log("Starting scraping");
+    console.log("Starting scraping " + category);
     const downloadPath = getDownloadPath(category);
     fs.mkdir(downloadPath, { recursive: true }, (err) => { if (err) console.log(err); });
     const browser = await puppeteer.launch({ executablePath: '/usr/bin/google-chrome' });
 
     await scrape(browser, category, downloadPath);
 
-    browser.close();
-    console.log("Done scraping");
+    await browser.close();
+    console.log("Done scraping " + category);
 }
 
 async function downloadVids(browser, category, vids, logVids, downloadPath) {
