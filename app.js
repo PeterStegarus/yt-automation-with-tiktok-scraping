@@ -5,7 +5,7 @@ const fs = require("fs");
 const scrape = require("./bin/scrape-files/scrape.js");
 const upload = require("./bin/upload-files/upload.js");
 
-const category = "cars";
+const category = process.env.CATEGORY;
 
 const app = express();
 app.set("view engine", "ejs");

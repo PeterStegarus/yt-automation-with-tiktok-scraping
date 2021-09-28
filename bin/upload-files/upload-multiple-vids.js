@@ -1,5 +1,5 @@
 const { upload } = require("youtube-videos-uploader");
-const uploadVid = require("./uploadVid");
+const uploadVid = require("./upload-vid.js");
 
 async function uploadMultipleVids(credentials, vids) {
     for (const vid in vids) {
