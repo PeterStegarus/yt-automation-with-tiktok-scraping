@@ -12,6 +12,9 @@ async function upload(acc, accIndex) {
     let index = parseInt(rawIndex);
     const localVidsNo = logVids.length;
 
+    if (index >= localVidsNo)
+        return;
+
     for (let i = 0; i < process.env.UPLOAD_NUMBER && index < localVidsNo; ++i) {
         const statusResult = await uploadVid(credentials, logVids[index], category);
         if (statusResult) {

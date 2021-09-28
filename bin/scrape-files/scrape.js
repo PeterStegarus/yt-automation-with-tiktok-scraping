@@ -20,11 +20,13 @@ async function scrapeInit(category) {
 
 async function downloadVids(browser, category, vids, logVids, downloadPath) {
     for (const i in vids) {
-        const { webVideoUrl: url, text: description } = vids[i];
-        if (logVids.find(element => element.title == description))
+        let { webVideoUrl: url, text: description } = vids[i];
+        // <>|
+        description = description.replace(/[\/\\.'":*?<>{}]/g, '');
+        const ttdownloaderUrl = "https://ttdownloader.com/?url=" + url;
+        if (logVids.find(element => element.ttdownloaderUrl == ttdownloaderUrl))
             continue;
         console.log("new entry " + description);
-        const ttdownloaderUrl = "https://ttdownloader.com/?url=" + url;
         const video = new vid(`${downloadPath}/${description}.mp4`, description, category, ttdownloaderUrl);
         logVids.push(video);
         await downloadTiktok(browser, video, i);
