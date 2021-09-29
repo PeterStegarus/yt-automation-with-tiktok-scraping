@@ -3,7 +3,7 @@ const downloadVidFromUrl = require("./download-vid-from-url.js");
 
 async function downloadTiktok(browser, video, index) {
     const page = await browser.newPage();
-    await page.setDefaultTimeout(0);
+    await page.setDefaultTimeout(600000);
     await page.goto(video.ttdownloaderUrl);
     // await page.waitForNavigation();
     await page.waitForSelector('.download-link')
