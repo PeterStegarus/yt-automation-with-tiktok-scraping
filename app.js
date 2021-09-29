@@ -42,7 +42,7 @@ app.post("/api/upload", async function (req, res) {
         isUploading = true;
         const accounts = JSON.parse(fs.readFileSync("./accounts.json"));
         for (accIndex in accounts) {
-            console.log(accounts[accIndex].category);
+            // console.log(accounts[accIndex].category);
             await upload(accounts[accIndex], accIndex);
         }
 
