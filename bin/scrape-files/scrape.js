@@ -22,6 +22,7 @@ async function downloadVids(browser, category, vids, logVids, downloadPath) {
     for (const i in vids) {
         let { webVideoUrl: url, text: description } = vids[i];
         description = description.replace(/[\/\\.'":|*?#<>{}]/g, '');
+        description = description.replace(/tiktok/ig, "Youtube");
         const ttdownloaderUrl = "https://ttdownloader.com/?url=" + url;
         if (logVids.find(element => element.ttdownloaderUrl == ttdownloaderUrl))
             continue;
