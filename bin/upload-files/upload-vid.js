@@ -1,4 +1,5 @@
 const { upload } = require("youtube-videos-uploader");
+const colors = require('colors');
 
 const onVideoUploadSuccess = videoUrl => status = true;
 
@@ -13,7 +14,7 @@ async function uploadVid(credentials, vid, category, index, localVidsNo) {
 
     const video = { path: vid.path, title: vid.title, description: vid.title + "\n\n" + desc, language: "english", tags: [category, "shorts", "#shorts"], onSuccess: onVideoUploadSuccess }
     await upload(credentials, [video]).then((msg) => {
-        console.log(`[${msg}]\nThere are now [${index + 1}/${localVidsNo}] [${category}] videos uploaded to youtube.\n`);
+        console.log(`[${msg}]\nThere are now [${index + 1}/${localVidsNo}] [${category}] videos uploaded to youtube.\n`.green);
         status = true;
     });
 

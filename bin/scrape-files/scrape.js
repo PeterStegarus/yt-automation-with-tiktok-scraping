@@ -5,6 +5,7 @@ const getDownloadPath = require("./get-download-path.js");
 const downloadTiktok = require("./download-tiktok.js");
 const vid = require("../objects/scraped-vid.js");
 const { raw } = require("express");
+const colors = require('colors');
 
 async function scrapeInit(category) {
     console.log("Starting scraping " + category);
@@ -21,15 +22,17 @@ async function scrapeInit(category) {
 async function downloadVids(browser, category, vids, logVids, downloadPath) {
     for (const i in vids) {
         let { webVideoUrl: url, text: description } = vids[i];
-        description = description.replace(/[\/\\.'":|*?#<>{}]/g, '');
+        description = description.replace(/[\/\\.'":|*?#<>{}]/g, "");
         description = description.replace(/tiktok/ig, "Youtube");
+        description = description.replace(/fyp/ig, "");
+        
         const ttdownloaderUrl = "https://ttdownloader.com/?url=" + url;
         if (logVids.find(element => element.ttdownloaderUrl == ttdownloaderUrl))
             continue;
-        console.log("new entry " + description);
+        console.log(`new entry ${description}`.cyan);
         const video = new vid(`${downloadPath}/${description}.mp4`, description, category, ttdownloaderUrl);
         logVids.push(video);
-        await downloadTiktok(browser, video, i);
+        await downloadTiktok(browser, video, i, logVids, category);
     }
 }
 
