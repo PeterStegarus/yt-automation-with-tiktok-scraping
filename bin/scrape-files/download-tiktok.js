@@ -8,18 +8,20 @@ async function downloadTiktok(browser, video, index, logVids, category) {
     await page.goto(video.ttdownloaderUrl);
 
     try {
-        await page.waitForSelector('.download-link')
-        console.log(`page loaded [${index}]`);
+        await Promise.all([
+            page.waitForNavigation(),
+            page.waitForSelector('.download-link')
+        ])
+        console.log(`Page loaded [${index}]`);
 
-        // await page.screenshot({ path: 'puppeteerScreenshot.png' });
         const downloadLink = await page.$eval('.download-link', el => el.getAttribute("href"));
-        page.close();
+        await page.close();
 
         downloadVidFromUrl(downloadLink, video, index, logVids, category);
     } catch (error) {
-        console.error(`${error} + . Retrying`.red);
-        page.close();
-        downloadTiktok(browser, video, index, logVids, category)
+        console.error(`${error}.`.red + "Retrying");
+        await page.close();
+        await downloadTiktok(browser, video, index, logVids, category);
     }
 }
 

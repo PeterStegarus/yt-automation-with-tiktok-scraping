@@ -26,7 +26,6 @@ async function upload(acc, accIndex) {
     index += parseInt(process.env.UPLOAD_NUMBER);
     fs.writeFileSync(`${process.env.VIDEOS_PATH}/${category}/upload-index.txt`, index.toString());
     fs.writeFileSync(`${process.env.VIDEOS_PATH}/${category}/logs.txt`, JSON.stringify(logVids));
-    // console.log(`There are now [${index}/${localVidsNo}] [${category}] videos uploaded to youtube`);
 }
 
 

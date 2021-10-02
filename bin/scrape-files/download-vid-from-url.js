@@ -10,7 +10,7 @@ async function downloadVidFromUrl(url, vid, index, logVids, category) {
 
     // fs.appendFileSync(`${process.env.VIDEOS_PATH}/${vid.category}/logs.txt`, `[${url}]:[${desc}]\r\n`);
     fs.writeFile(vid.path, buffer, () => {
-        console.log(`finished downloading video [${index}]`.green);
+        console.log(`Downloaded vid [${index}]`.green);
         fs.writeFileSync(`${process.env.VIDEOS_PATH}/${category}` + "/logs.txt", JSON.stringify(logVids));
     });
 }

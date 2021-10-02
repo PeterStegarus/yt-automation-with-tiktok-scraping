@@ -8,7 +8,7 @@ const { raw } = require("express");
 const colors = require('colors');
 
 async function scrapeInit(category) {
-    console.log("Starting scraping " + category);
+    console.log(`Starting scraping [${category}]`.bgYellow);
     const downloadPath = getDownloadPath(category);
     fs.mkdir(downloadPath, { recursive: true }, (err) => { if (err) console.log(err); });
     const browser = await puppeteer.launch({ executablePath: '/usr/bin/google-chrome' });
@@ -16,7 +16,7 @@ async function scrapeInit(category) {
     await scrape(browser, category, downloadPath);
 
     await browser.close();
-    console.log("Done scraping " + category);
+    console.log(`Done scraping [${category}]`.bgGreen);
 }
 
 async function downloadVids(browser, category, vids, logVids, downloadPath) {
@@ -29,7 +29,7 @@ async function downloadVids(browser, category, vids, logVids, downloadPath) {
         const ttdownloaderUrl = "https://ttdownloader.com/?url=" + url;
         if (logVids.find(element => element.ttdownloaderUrl == ttdownloaderUrl))
             continue;
-        console.log(`new entry ${description}`.cyan);
+        console.log(`New entry [${description.substring(0,10)}..]`.cyan);
         const video = new vid(`${downloadPath}/${description}.mp4`, description, category, ttdownloaderUrl);
         logVids.push(video);
         await downloadTiktok(browser, video, i, logVids, category);
