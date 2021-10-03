@@ -1,7 +1,6 @@
 require('dotenv').config();
 const express = require("express");
 const ejs = require("ejs");
-const fs = require("fs");
 const scrape = require("./bin/scrape-files/scrape.js");
 const upload = require("./bin/upload-files/upload.js");
 
@@ -26,10 +25,7 @@ app.get("/", function (req, res) {
 app.post("/api/scrape", async function (req, res) {
     if (!isScraping) {
         isScraping = true;
-        const accounts = JSON.parse(fs.readFileSync("./accounts.json"));
-        for (const acc in accounts) {
-            await scrape(accounts[acc].category);
-        }
+        await scrape();
         isScraping = false;
     }
 })
@@ -40,12 +36,7 @@ app.post("/api/upload", async function (req, res) {
     accIndex = 0;
     if (!isUploading) {
         isUploading = true;
-        const accounts = JSON.parse(fs.readFileSync("./accounts.json"));
-        for (accIndex in accounts) {
-            // console.log(accounts[accIndex].category);
-            await upload(accounts[accIndex], accIndex);
-        }
-
+        await upload();
         isUploading = false;
     }
 })

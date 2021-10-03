@@ -4,7 +4,7 @@ const puppeteer = require("puppeteer");
 const getDownloadPath = require("./get-download-path.js");
 const downloadTiktok = require("./download-tiktok.js");
 const vid = require("../objects/scraped-vid.js");
-const { raw } = require("express");
+// const { raw } = require("express");
 const colors = require('colors');
 
 async function scrapeInit(category) {
@@ -25,11 +25,11 @@ async function downloadVids(browser, category, vids, logVids, downloadPath) {
         description = description.replace(/[\/\\.'":|*?#<>{}]/g, "");
         description = description.replace(/fyp|foryoupage/ig, "");
         description = description.replace(/tiktok/ig, "Youtube");
-        
+
         const ttdownloaderUrl = "https://ttdownloader.com/?url=" + url;
         if (logVids.find(element => element.ttdownloaderUrl == ttdownloaderUrl))
             continue;
-        console.log(`New entry [${description.substring(0,10)}..]`.cyan);
+        console.log(`New entry [${description.substring(0, 10)}..]`.cyan);
         const video = new vid(`${downloadPath}/${description}.mp4`, description, category, ttdownloaderUrl);
         logVids.push(video);
         await downloadTiktok(browser, video, i, logVids, category);
@@ -48,4 +48,11 @@ async function scrape(browser, category, downloadPath) {
     fs.writeFileSync(downloadPath + "/logs.txt", JSON.stringify(logVids));
 }
 
-module.exports = scrapeInit;
+async function scrapeAll() {
+    const accounts = JSON.parse(fs.readFileSync("./accounts.json"));
+    for (const acc in accounts) {
+        await scrapeInit(accounts[acc].category);
+    }
+}
+
+module.exports = scrapeAll;

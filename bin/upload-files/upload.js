@@ -1,7 +1,5 @@
 const fs = require("fs");
-const uploadMultipleVids = require("./upload-multiple-vids.js");
 const uploadVid = require("./upload-vid.js");
-const vid = require("../objects/scraped-vid.js");
 
 async function upload(acc, accIndex) {
     credentials = { email: acc.email, pass: acc.pass, recoveryemail: acc.recoveryEmail };
@@ -22,13 +20,16 @@ async function upload(acc, accIndex) {
         }
     }
 
-
     index += parseInt(process.env.UPLOAD_NUMBER);
     fs.writeFileSync(`${process.env.VIDEOS_PATH}/${category}/upload-index.txt`, index.toString());
     fs.writeFileSync(`${process.env.VIDEOS_PATH}/${category}/logs.txt`, JSON.stringify(logVids));
 }
 
+async function uploadAll() {
+    const accounts = JSON.parse(fs.readFileSync("./accounts.json"));
+    for (accIndex in accounts) {
+        await upload(accounts[accIndex], accIndex);
+    }
+}
 
-
-
-module.exports = upload;
+module.exports = uploadAll;
