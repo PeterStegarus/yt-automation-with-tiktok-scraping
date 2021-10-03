@@ -2,15 +2,14 @@ const fs = require('fs');
 const fetch = require('node-fetch');
 const colors = require('colors');
 
-
-
-async function downloadVidFromUrl(url, vid, index, logVids, category) {
+async function downloadVidFromUrl(url, video, index, logVids, category) {
     const response = await fetch(url);
     const buffer = await response.buffer();
 
     // fs.appendFileSync(`${process.env.VIDEOS_PATH}/${vid.category}/logs.txt`, `[${url}]:[${desc}]\r\n`);
-    fs.writeFile(vid.path, buffer, () => {
-        console.log(`Downloaded vid [${index}]`.green);
+    fs.writeFile(video.path, buffer, () => {
+        console.log(`Downloaded vid [${index}] in [${category}]`.green);
+        logVids.push(video);
         fs.writeFileSync(`${process.env.VIDEOS_PATH}/${category}` + "/logs.txt", JSON.stringify(logVids));
     });
 }

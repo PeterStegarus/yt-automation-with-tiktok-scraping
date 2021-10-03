@@ -7,19 +7,19 @@ const vid = require("../objects/scraped-vid.js");
 // const { raw } = require("express");
 const colors = require('colors');
 
-async function scrapeInit(category) {
+async function scrapeInit(category, browser) {
     console.log(`Starting scraping [${category}]`.bgYellow);
     const downloadPath = getDownloadPath(category);
     fs.mkdir(downloadPath, { recursive: true }, (err) => { if (err) console.log(err); });
-    const browser = await puppeteer.launch({ executablePath: '/usr/bin/google-chrome' });
 
     await scrape(browser, category, downloadPath);
 
-    await browser.close();
     console.log(`Done scraping [${category}]`.bgGreen);
 }
 
 async function downloadVids(browser, category, vids, logVids, downloadPath) {
+    const promises = [];
+
     for (const i in vids) {
         let { webVideoUrl: url, text: description } = vids[i];
         description = description.replace(/[\/\\.'":|*?#<>{}]/g, "");
@@ -29,11 +29,13 @@ async function downloadVids(browser, category, vids, logVids, downloadPath) {
         const ttdownloaderUrl = "https://ttdownloader.com/?url=" + url;
         if (logVids.find(element => element.ttdownloaderUrl == ttdownloaderUrl))
             continue;
-        console.log(`New entry [${description.substring(0, 10)}..]`.cyan);
+        console.log(`New entry [${description.substring(0, 10)}..] in [${category}]`.cyan);
         const video = new vid(`${downloadPath}/${description}.mp4`, description, category, ttdownloaderUrl);
-        logVids.push(video);
-        await downloadTiktok(browser, video, i, logVids, category);
+        // await downloadTiktok(browser, video, i, logVids, category);
+        promises.push(downloadTiktok(browser, video, i, logVids, category));
     }
+
+    await Promise.all(promises);
 }
 
 async function scrape(browser, category, downloadPath) {
@@ -49,10 +51,19 @@ async function scrape(browser, category, downloadPath) {
 }
 
 async function scrapeAll() {
+    const browser = await puppeteer.launch({ executablePath: '/usr/bin/google-chrome' });
+
     const accounts = JSON.parse(fs.readFileSync("./accounts.json"));
+    const promises = [];
     for (const acc in accounts) {
-        await scrapeInit(accounts[acc].category);
+        promises.push(scrapeInit(accounts[acc].category, browser));
     }
+
+    Promise.all(promises)
+        .then((results) => {
+            browser.close().then((browserRes) => console.log("CLOSED BROWSER"));
+            console.log("DONE SCRAPING".bgGreen);
+        });
 }
 
 module.exports = scrapeAll;
