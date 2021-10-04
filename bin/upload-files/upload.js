@@ -13,15 +13,15 @@ async function upload(acc, accIndex) {
     if (index >= localVidsNo)
         return;
 
-    for (let i = 0; i < process.env.UPLOAD_NUMBER && index < localVidsNo; ++i) {
-        const statusResult = await uploadVid(credentials, logVids[index], category, index, localVidsNo);
-        if (statusResult) {
-            logVids[index].uploaded = true;
-        }
+    // for (let i = 0; i < process.env.UPLOAD_NUMBER && index < localVidsNo; ++i) {
+    const statusResult = await uploadVid(credentials, logVids[index], category, index, localVidsNo);
+    if (statusResult) {
+        logVids[index].uploaded = true;
+        index += parseInt(process.env.UPLOAD_NUMBER);
+        fs.writeFileSync(`${process.env.VIDEOS_PATH}/${category}/upload-index.txt`, index.toString());
     }
+    // }
 
-    index += parseInt(process.env.UPLOAD_NUMBER);
-    fs.writeFileSync(`${process.env.VIDEOS_PATH}/${category}/upload-index.txt`, index.toString());
     fs.writeFileSync(`${process.env.VIDEOS_PATH}/${category}/logs.txt`, JSON.stringify(logVids));
 }
 

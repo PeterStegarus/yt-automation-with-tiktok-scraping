@@ -23,6 +23,12 @@ async function uploadVid(credentials, vid, category, index, localVidsNo) {
 
         return status;
     } catch (error) {
+        //usually, the error 'Error: No node found for selector: [aria-label="Tags"].' shows up when an account has reached its daily upload limit. (10 vids for new accounts)
+        //in this case, simply return false and skip this channel.
+        if (error.toString().search("aria-label=\"Tags\"") != -1) {
+            console.error(`${error}.`.red + `[${category}] reached upload limit. Skipping.`);
+            return false;
+        }
         console.error(`${error}.`.red + "Retrying");
         return await uploadVid(credentials, vid, category, index, localVidsNo);
     }
