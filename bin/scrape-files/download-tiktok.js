@@ -4,7 +4,7 @@ const colors = require('colors');
 
 async function downloadTiktok(browser, video, index, logVids, category) {
     const page = await browser.newPage();
-    await page.setDefaultTimeout(60000);
+    await page.setDefaultTimeout(120000);
     await page.goto(video.ttdownloaderUrl);
     try {
         await Promise.all([
