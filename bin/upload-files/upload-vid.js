@@ -24,7 +24,7 @@ async function uploadVid(credentials, vid, category, index, localVidsNo) {
         return status;
     } catch (error) {
         console.error(`${error}.`.red + "Retrying");
-        await uploadVid(credentials, vid, category, index, localVidsNo);
+        return await uploadVid(credentials, vid, category, index, localVidsNo);
     }
 }
 
