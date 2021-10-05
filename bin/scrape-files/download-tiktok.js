@@ -46,7 +46,7 @@ async function downloadTiktok(browser, video, index, logVids, category) {
     } catch (error) {
         await page.close();
         const randomTimeout = timeout503Random();
-        console.error(`${error}.`.red + ` Retrying [${index}] in [${category}] in [${randomTimeout}ms]`);
+        console.error(`${error}.`.yellow + ` Retrying [${index}] in [${category}] in [${randomTimeout}ms]`);
         await sleep(randomTimeout);
         await downloadTiktok(browser, video, index, logVids, category);
     }
