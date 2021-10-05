@@ -3,13 +3,25 @@ const downloadVidFromUrl = require("./download-vid-from-url.js");
 const colors = require('colors');
 
 const timeout = 60000;
-const minTimeout503 = 3000
-const maxTimeout503 = 15000;
+const minTimeout503 = 1000
+const maxTimeout503 = 10000;
 const height = 900;
 const width = 900;
 
 function timeout503Random() {
-    return Math.floor(Math.random() * (maxTimeout503 - minTimeout503 + 1000) + minTimeout503);
+    const tm = Math.floor(Math.random() * (maxTimeout503 - minTimeout503 + 1000) + minTimeout503);
+    return tm;
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function check503(page, category, video, index) {
+    const h1 = await page.$eval("h1", el => el.innerText);
+    if (h1 == "503 Service Temporarily Unavailable") {
+        throw `[${category}] [${index}] 503 Unavailable`;
+    }
 }
 
 async function downloadTiktok(browser, video, index, logVids, category) {
@@ -17,22 +29,14 @@ async function downloadTiktok(browser, video, index, logVids, category) {
     await page.setDefaultTimeout(timeout);
     await page.setViewport({ width: width, height: height });
     await page.goto(video.ttdownloaderUrl);
-    //503 Service Temporarily Unavailable
 
     try {
-        // await Promise.all([
-        // await page.waitForNavigation();
-        // ]);
+        await Promise.all([
+            page.waitForNavigation(),
+            check503(page, category, video, index),
+            page.waitForSelector('.download-link')
+        ]);
 
-        const h1 = await page.$eval("h1", el => el.innerText);
-        if (h1 == "503 Service Temporarily Unavailable") {
-            console.log(`[${category}] [${video}/${index}] 503 Unavailable. `.red + `Retrying.`);
-            page.close();
-            setTimeout(() => { downloadTiktok(browser, video, index, logVids, category); }, timeout503Random());
-            return;
-        }
-
-        await page.waitForSelector('.download-link');
         console.log(`Page loaded [${index}] in [${category}]`);
 
         const downloadLink = await page.$eval('.download-link', el => el.getAttribute("href"));
@@ -41,7 +45,9 @@ async function downloadTiktok(browser, video, index, logVids, category) {
         downloadVidFromUrl(downloadLink, video, index, logVids, category);
     } catch (error) {
         await page.close();
-        console.error(`${error}.`.red + ` Retrying [${index}] in [${category}]`);
+        const randomTimeout = timeout503Random();
+        console.error(`${error}.`.red + ` Retrying [${index}] in [${category}] in [${randomTimeout}ms]`);
+        await sleep(randomTimeout);
         await downloadTiktok(browser, video, index, logVids, category);
     }
 }

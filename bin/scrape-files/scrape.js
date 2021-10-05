@@ -52,7 +52,7 @@ async function scrape(browser, category, downloadPath) {
 
 const puppeteerOptions = {
     // executablePath: "/usr/bin/google-chrome",
-    headless: false
+    headless: true
 };
 
 async function scrapeAll() {
