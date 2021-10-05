@@ -3,8 +3,11 @@ const colors = require('colors');
 
 const onVideoUploadSuccess = videoUrl => status = true;
 
-
 var status = false;
+const puppeteerOptions = {
+    // executablePath: "/usr/bin/google-chrome",
+    headless: false
+};
 
 async function uploadVid(credentials, vid, category, index, localVidsNo) {
     try {
@@ -16,7 +19,7 @@ async function uploadVid(credentials, vid, category, index, localVidsNo) {
         const video = { path: vid.path, title: vid.title, description: vid.title + "\n\n" + desc, language: "english", tags: [category, "shorts", "#shorts"], onSuccess: onVideoUploadSuccess }
 
 
-        await upload(credentials, [video]).then((msg) => {
+        await upload(credentials, [video], puppeteerOptions).then((msg) => {
             console.log(`[${msg}]\n[${index + 1}/${localVidsNo}] vids uploaded in [${category}].\n`.green);
             status = true;
         });

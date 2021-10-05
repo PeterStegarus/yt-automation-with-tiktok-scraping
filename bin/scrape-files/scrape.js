@@ -50,8 +50,13 @@ async function scrape(browser, category, downloadPath) {
     fs.writeFileSync(downloadPath + "/logs.txt", JSON.stringify(logVids));
 }
 
+const puppeteerOptions = {
+    // executablePath: "/usr/bin/google-chrome",
+    headless: false
+};
+
 async function scrapeAll() {
-    const browser = await puppeteer.launch({ executablePath: '/usr/bin/google-chrome' });
+    const browser = await puppeteer.launch(puppeteerOptions);
 
     const accounts = JSON.parse(fs.readFileSync("./accounts.json"));
     const promises = [];
