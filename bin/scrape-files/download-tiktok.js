@@ -4,7 +4,7 @@ const colors = require('colors');
 
 const timeout = 60000;
 const minTimeout503 = 1000
-const maxTimeout503 = 10000;
+const maxTimeout503 = 35000;
 const height = 900;
 const width = 900;
 
@@ -46,7 +46,7 @@ async function downloadTiktok(browser, video, index, logVids, category) {
     } catch (error) {
         await page.close();
         const randomTimeout = timeout503Random();
-        console.error(`${error}.`.yellow + ` Retrying [${index}] in [${category}] in [${randomTimeout}ms]`);
+        // console.error(`${error}.`.yellow + ` Retrying [${index}] in [${category}] in [${randomTimeout}ms]`);
         await sleep(randomTimeout);
         await downloadTiktok(browser, video, index, logVids, category);
     }
