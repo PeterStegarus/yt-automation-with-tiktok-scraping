@@ -6,7 +6,7 @@ const onVideoUploadSuccess = videoUrl => status = true;
 var status = false;
 const puppeteerOptions = {
     // executablePath: "/usr/bin/google-chrome",
-    headless: false
+    headless: true
 };
 
 async function uploadVid(credentials, vid, category, index, localVidsNo) {
