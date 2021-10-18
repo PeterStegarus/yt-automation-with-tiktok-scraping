@@ -51,8 +51,8 @@ async function scrape(browser, category, downloadPath) {
 }
 
 const puppeteerOptions = {
-    // executablePath: "/usr/bin/google-chrome",
-    headless: true
+    executablePath: "/usr/bin/google-chrome-stable",
+    headless: true,
 };
 
 async function scrapeAll() {
