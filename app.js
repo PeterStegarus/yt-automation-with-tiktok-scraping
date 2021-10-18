@@ -26,17 +26,24 @@ app.get("/", function (req, res) {
     });
 })
 
+
 app.post("/api/scrape", async function (req, res) {
+    function toggleIsScraping() {
+        console.log("DONE SCRAPING".bgGreen);
+        isScraping = !isScraping;
+        res.redirect("/api/scrape");
+    }
     if (!isScraping) {
         isScraping = true;
-        scrape().then(() => {
-            isScraping = false;
-            res.redirect("/api/scrape");
-        });
+        await scrape(toggleIsScraping);
     }
 })
 
 var accIndex = 0;
+
+function toggleIsUploading() {
+    isUploading = !isUploading;
+}
 
 app.post("/api/upload", async function (req, res) {
     accIndex = 0;

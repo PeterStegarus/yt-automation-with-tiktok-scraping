@@ -55,7 +55,7 @@ const puppeteerOptions = {
     headless: true,
 };
 
-async function scrapeAll() {
+async function scrapeAll(toggleIsScraping) {
     const browser = await puppeteer.launch(puppeteerOptions);
 
     const accounts = JSON.parse(fs.readFileSync("./accounts.json"));
@@ -64,10 +64,10 @@ async function scrapeAll() {
         promises.push(scrapeInit(accounts[acc].category, browser));
     }
 
-    await Promise.all(promises)
+    Promise.all(promises)
         .then((results) => {
             browser.close().then((browserRes) => console.log("CLOSED BROWSER"));
-            console.log("DONE SCRAPING".bgGreen);
+            toggleIsScraping();
         });
 }
 
