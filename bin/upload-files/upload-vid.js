@@ -5,7 +5,7 @@ const onVideoUploadSuccess = videoUrl => status = true;
 
 var status = false;
 const puppeteerOptions = {
-    userDataDir: "./tmp",
+    // userDataDir: "./tmp",
     executablePath: "/usr/bin/google-chrome-stable",
     headless: false,
     args: ['--disable-web-security'/*, '--user-data-dir'*/, '--allow-running-insecure-content' ]
