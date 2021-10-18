@@ -19,7 +19,7 @@
 
         <div class="p-5 mb-4 text-white bg-dark rounded-3">
             <div class="container-fluid py-5">
-                <h1 class="display-5 fw-bold">tiktok scraper [check env.SCRAPE_NUMBER]</h1>
+                <h1 class="display-5 fw-bold">tiktok scraper [<%= scrapeNumber %>] </h1>
                 <p class="col-md-8 fs-4"></p>
                 <iframe name="dummy_iframe" width="0" height="0" style="display: none;"></iframe>
                 <form action="/api/scrape" method="POST" target="dummy_iframe">
@@ -30,7 +30,7 @@
 
         <div class="p-5 mb-4 text-white bg-secondary rounded-3">
             <div class="container-fluid py-5">
-                <h1 class="display-5 fw-bold">youtube uploader [check env.UPLOAD_NUMBER]</h1>
+                <h1 class="display-5 fw-bold">youtube uploader. about [<%= scrapeNumber - uploadNumber%>] more to upload</h1>
                 <p class="col-md-8 fs-4"></p>
                 <iframe name="dummy_iframe" width="0" height="0" style="display: none;"></iframe>
                 <form action="/api/upload" method="POST" target="dummy_iframe">

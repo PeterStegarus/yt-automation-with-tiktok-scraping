@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require("express");
 const ejs = require("ejs");
+const fs = require("fs");
 const scrape = require("./bin/scrape-files/scrape.js");
 const upload = require("./bin/upload-files/upload.js");
 
@@ -17,8 +18,11 @@ let isScraping = false;
 let isUploading = false;
 
 app.get("/", function (req, res) {
+    let uploadNumber = fs.readFileSync(`${process.env.VIDEOS_PATH}/cars/upload-index.txt`);
+    let scrapeNumber = process.env.SCRAPE_NUMBER;
     res.render("index", {
-        info: infoTxt,
+        scrapeNumber: scrapeNumber,
+        uploadNumber: uploadNumber
     });
 })
 
@@ -27,6 +31,7 @@ app.post("/api/scrape", async function (req, res) {
         isScraping = true;
         await scrape();
         isScraping = false;
+        res.redirect("/api/scrape");
     }
 })
 
@@ -38,6 +43,7 @@ app.post("/api/upload", async function (req, res) {
         isUploading = true;
         await upload();
         isUploading = false;
+        res.redirect("/api/upload");
     }
 })
 
