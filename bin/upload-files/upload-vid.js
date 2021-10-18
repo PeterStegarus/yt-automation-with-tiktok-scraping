@@ -5,8 +5,11 @@ const onVideoUploadSuccess = videoUrl => status = true;
 
 var status = false;
 const puppeteerOptions = {
-    // executablePath: "/usr/bin/google-chrome",
-    headless: false
+    // userDataDir: "/home/peter/.config/google-chrome/",
+    executablePath: "/usr/bin/google-chrome-stable",
+    // executablePath: "/usr/bin/firefox",
+    headless: false,
+    args: ['--disable-web-security'/*, '--user-data-dir'*/, '--allow-running-insecure-content' ]
 };
 
 async function uploadVid(credentials, vid, category, index, localVidsNo) {
