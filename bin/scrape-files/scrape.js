@@ -64,7 +64,7 @@ async function scrapeAll() {
         promises.push(scrapeInit(accounts[acc].category, browser));
     }
 
-    Promise.all(promises)
+    await Promise.all(promises)
         .then((results) => {
             browser.close().then((browserRes) => console.log("CLOSED BROWSER"));
             console.log("DONE SCRAPING".bgGreen);

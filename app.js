@@ -29,9 +29,10 @@ app.get("/", function (req, res) {
 app.post("/api/scrape", async function (req, res) {
     if (!isScraping) {
         isScraping = true;
-        await scrape();
-        isScraping = false;
-        res.redirect("/api/scrape");
+        scrape().then(() => {
+            isScraping = false;
+            res.redirect("/api/scrape");
+        });
     }
 })
 
@@ -41,9 +42,10 @@ app.post("/api/upload", async function (req, res) {
     accIndex = 0;
     if (!isUploading) {
         isUploading = true;
-        await upload();
-        isUploading = false;
-        res.redirect("/api/upload");
+        upload().then(() => {
+            isUploading = false;
+            res.redirect("/api/upload");
+        });
     }
 })
 
