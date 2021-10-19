@@ -4,14 +4,15 @@ const colors = require('colors');
 const onVideoUploadSuccess = videoUrl => status = true;
 
 var status = false;
-const puppeteerOptions = {
-    // userDataDir: "./tmp",
-    executablePath: "/usr/bin/google-chrome-stable",
-    headless: false,
-    args: ['--disable-web-security'/*, '--user-data-dir'*/, '--allow-running-insecure-content' ]
-};
 
 async function uploadVid(credentials, vid, category, index, localVidsNo) {
+    const puppeteerOptions = {
+        userDataDir: `./dataDirs/${category}`,
+        executablePath: "/usr/bin/google-chrome-stable",
+        headless: false,
+        args: ['--disable-web-security'/*, '--user-data-dir'*/, '--allow-running-insecure-content']
+    };
+
     try {
         const desc = `#shorts #${category}\n\nWe post daily videos of ${category} and related content.\n\nDisclaimer: The video clips posted on this channel are not owned by the channel itself. This is only a compilations channel.\n\nIf you are the owner of this video and feel like you haven’t been duly credited, please contact me here, and I will get back to you ASAP.\n`;
         console.log(`Uploading in [${category}]: [${(vid.title).substring(0, 10)}..]`.yellow);
