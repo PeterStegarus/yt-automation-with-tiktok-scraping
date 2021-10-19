@@ -7,7 +7,7 @@ var status = false;
 
 async function uploadVid(credentials, vid, category, index, localVidsNo) {
     const puppeteerOptions = {
-        userDataDir: `./dataDirs/${category}`,
+        userDataDir: `./data-dirs/${category}`,
         executablePath: "/usr/bin/google-chrome-stable",
         headless: false,
         args: ['--disable-web-security'/*, '--user-data-dir'*/, '--allow-running-insecure-content']
