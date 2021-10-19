@@ -5,3 +5,4 @@ accounts.json
 backup_accounts.json
 test.js
 tmp
+dataDirs/
