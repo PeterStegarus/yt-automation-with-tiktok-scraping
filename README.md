@@ -44,6 +44,6 @@ upload-index.txt
 
 Temporary workaround example. Run in the ./videos directory:
 
-category='cars'
-
-mkdir $category && touch $category/logs.txt $category/upload-index.txt && echo '[]' >> $category/logs.txt && echo 0 >> $category/upload-index.txt
+    category='cars'
+    
+    mkdir $category && touch $category/logs.txt $category/upload-index.txt && echo '[]' >> $category/logs.txt && echo 0 >> $category/upload-index.txt
