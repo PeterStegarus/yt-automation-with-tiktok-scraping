@@ -25,12 +25,12 @@ async function check503(page, category, video, index) {
 }
 
 async function downloadTiktok(browser, video, index, logVids, category) {
-    const page = await browser.newPage();
-    await page.setDefaultTimeout(timeout);
-    await page.setViewport({ width: width, height: height });
-    await page.goto(video.ttdownloaderUrl);
-
+    let page;
     try {
+        page = await browser.newPage();
+        await page.setDefaultTimeout(timeout);
+        await page.setViewport({ width: width, height: height });
+        await page.goto(video.ttdownloaderUrl);
         await Promise.all([
             page.waitForNavigation(),
             check503(page, category, video, index),
