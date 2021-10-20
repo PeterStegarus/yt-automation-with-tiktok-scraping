@@ -2,8 +2,8 @@ require('dotenv').config({path: "./config/.env"});
 const express = require("express");
 const ejs = require("ejs");
 const fs = require("fs");
-const scrape = require("./bin/scrape-files/scrape.js");
-const upload = require("./bin/upload-files/upload.js");
+const scrape = require("./libs/scrape/scrape.js");
+const upload = require("./libs/upload/upload.js");
 
 const app = express();
 app.set("view engine", "ejs");
