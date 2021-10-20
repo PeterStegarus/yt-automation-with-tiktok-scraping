@@ -2,15 +2,22 @@ Required files examples
 
 
 
-.env
+config/.env
 
     VIDEOS_PATH=./videos
-    SCRAPE_NUMBER=50
-    UPLOAD_NUMBER=1
 
 
 
-accounts.json
+config/config.json
+
+    {
+        "uploadNumber": 1,
+        "scrapeNumber": 142
+    }
+
+
+
+config/accounts.json
 
     [
         {
