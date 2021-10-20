@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv').config({path: "./config/.env"});
 const express = require("express");
 const ejs = require("ejs");
 const fs = require("fs");
@@ -19,7 +19,7 @@ let isUploading = false;
 
 app.get("/", function (req, res) {
     let uploadNumber = fs.readFileSync(`${process.env.VIDEOS_PATH}/cars/upload-index.txt`);
-    let scrapeNumber = process.env.SCRAPE_NUMBER;
+    let scrapeNumber = JSON.parse(fs.readFileSync("./config/config.json")).scrapeNumber;
     res.render("index", {
         scrapeNumber: scrapeNumber,
         uploadNumber: uploadNumber
