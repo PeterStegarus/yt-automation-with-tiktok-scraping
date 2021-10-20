@@ -1,3 +1,4 @@
+const fs = require("fs");
 const { upload } = require("youtube-videos-uploader");
 const colors = require('colors');
 
@@ -24,6 +25,7 @@ async function uploadVid(credentials, vid, category, index, localVidsNo) {
 
         await upload(credentials, [video], puppeteerOptions).then((msg) => {
             console.log(`[${msg}]\n[${index + 1}/${localVidsNo}] vids uploaded in [${category}].\n`.green);
+            fs.unlinkSync(vid.path);
             status = true;
         });
 
