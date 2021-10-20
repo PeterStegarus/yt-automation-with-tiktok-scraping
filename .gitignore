@@ -1,6 +1,7 @@
 node_modules/
 videos/[^.]*
 config/.env
+config/config.json
 config/accounts.json
 config/backup_accounts.json
 test.js
