@@ -10,7 +10,7 @@ async function uploadVid(credentials, vid, category, index, localVidsNo) {
     const puppeteerOptions = {
         userDataDir: `./data-dirs/${category}`,
         executablePath: "/usr/bin/google-chrome-stable",
-        headless: false,
+        headless: true,
         args: ['--disable-web-security'/*, '--user-data-dir'*/, '--allow-running-insecure-content']
     };
 
@@ -34,8 +34,12 @@ async function uploadVid(credentials, vid, category, index, localVidsNo) {
         //usually, the error 'Error: No node found for selector: [aria-label="Tags"].' shows up when an account has reached its daily upload limit. (10 vids for new accounts)
         //in this case, simply return false and skip this channel.
         if (error.toString().search("aria-label=\"Tags\"") != -1) {
-            console.error(`${error}.`.red + `[${category}] reached upload limit. Skipping.\n`);
+            console.error(`${error}. `.red + `[${category}] reached upload limit. Skipping.\n`);
             return false;
+        }
+        if (error.toString().search("does not exist or is not readable")) {
+            console.log(`${error}. `.red + `Skipping vid`);
+            return true;
         }
         console.error(`${error}.`.red + "Retrying");
         return await uploadVid(credentials, vid, category, index, localVidsNo);
