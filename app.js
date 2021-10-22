@@ -1,4 +1,4 @@
-require('dotenv').config({path: "./config/.env"});
+require('dotenv').config({ path: "./config/.env" });
 const express = require("express");
 const ejs = require("ejs");
 const fs = require("fs");
@@ -31,7 +31,7 @@ app.post("/api/scrape", async function (req, res) {
     function toggleIsScraping() {
         console.log("DONE SCRAPING".bgGreen);
         isScraping = !isScraping;
-        res.redirect("/api/scrape");
+        res.sendStatus(200);
     }
     if (!isScraping) {
         isScraping = true;
@@ -41,17 +41,13 @@ app.post("/api/scrape", async function (req, res) {
 
 var accIndex = 0;
 
-function toggleIsUploading() {
-    isUploading = !isUploading;
-}
-
 app.post("/api/upload", async function (req, res) {
     accIndex = 0;
     if (!isUploading) {
         isUploading = true;
         upload().then(() => {
             isUploading = false;
-            res.redirect("/api/upload");
+            res.sendStatus(200);
         });
     }
 })
