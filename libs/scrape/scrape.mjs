@@ -2,7 +2,7 @@ import fs from "fs";
 import tiktokScraper from "tiktok-scraper";
 import puppeteer from 'puppeteer';
 import pLimit from 'p-limit';
-import downloadTiktok from "./download-tiktok.js";
+import downloadTiktok from "./download-tiktok-from-tikmate.js";
 import vid from "../objects/scraped-vid.js";
 import colors from 'colors';
 
@@ -30,7 +30,7 @@ async function downloadVids(browser, category, vids, logVids, downloadPath, conc
         if (logVids.find(element => element.ttdownloaderUrl == ttdownloaderUrl))
             continue;
         console.log(`New entry [${description.substring(0, 10)}..] in [${category}]`.cyan);
-        const video = new vid(`${downloadPath}/${description}.mp4`, description, category, ttdownloaderUrl);
+        const video = new vid(`${downloadPath}/${description}.mp4`, description, category, ttdownloaderUrl, url);
         // await downloadTiktok(browser, video, i, logVids, category);
         promises.push(limit(() => downloadTiktok(browser, video, i, logVids, category)));
     }
@@ -53,7 +53,7 @@ async function scrape(browser, category, downloadPath) {
 
 const puppeteerOptions = {
     executablePath: "/usr/bin/google-chrome-stable",
-    headless: true,
+    headless: false,
 };
 
 async function scrapeAll(toggleIsScraping) {
