@@ -20,14 +20,22 @@ async function downloadTiktok(browser, video, index, logVids, category) {
         await page.waitForXPath('//*[contains(text(), "Download Server 01 (TikMate)")]');
         let downloadUrl = await page.$eval('a.abutton.is-success.is-fullwidth[onclick]', el => el.getAttribute("href"));
         downloadUrl = "https://tikmate.online" + downloadUrl;
-        
-        await page.close();
+
+        // await page._client.send('Page.setDownloadBehavior', {
+        //     behavior: 'allow',
+        //     downloadPath: video.path
+        // });
+        // var button = await page.$('a.abutton.is-success.is-fullwidth[onclick]');
+        // await button.evaluate(b => b.click());
 
         downloadVidFromDirectUrl(downloadUrl, video, index, logVids, category);
+        await page.close();
+
 
     } catch (error) {
         await page.close();
-        console.log("Error downloading vid. [".red + error.white + "]".red);
+        console.log(`Error downloading [${index}] [${category}]. [`.red + error.white + "]".red + " Retrying");
+        await downloadTiktok(browser, video, index, logVids, category);
     }
 }
 
