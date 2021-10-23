@@ -1,10 +1,11 @@
 import dotenv from 'dotenv'
 dotenv.config({ path: "./config/.env" });
 import express from "express";
-import ejs from "ejs"; 
+import ejs from "ejs";
 import fs from "fs";
 import scrape from "./libs/scrape/scrape.mjs"
 import upload from "./libs/upload/upload.js";
+import clean from "./libs/clean/clean.js";
 
 const app = express();
 app.set("view engine", "ejs");
@@ -51,6 +52,11 @@ app.post("/api/upload", async function (req, res) {
             res.sendStatus(200);
         });
     }
+})
+
+app.post("/api/clean", async function (req, res) {
+    clean();
+    res.sendStatus(200);
 })
 
 app.listen(3000, function () {

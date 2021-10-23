@@ -19,8 +19,8 @@
 
         <div class="p-5 mb-4 text-white bg-dark rounded-3">
             <div class="container-fluid py-5">
-                <h1 class="display-5 fw-bold">tiktok scraper [<%= scrapeNumber %>] </h1>
-                <p class="col-md-8 fs-4"></p>
+                <h1 class="display-5 fw-bold">tiktok scraper</h1>
+                <p class="col-md-8 fs-4">[<%= scrapeNumber %>]</p>
                 <iframe name="dummy_iframe" width="0" height="0" style="display: none;"></iframe>
                 <form action="/api/scrape" method="POST" target="dummy_iframe">
                     <button class="btn btn-outline-light" type="submit">Scrape</button>
@@ -30,11 +30,22 @@
 
         <div class="p-5 mb-4 text-white bg-secondary rounded-3">
             <div class="container-fluid py-5">
-                <h1 class="display-5 fw-bold">youtube uploader. about [<%= scrapeNumber - uploadNumber%>] more to upload</h1>
-                <p class="col-md-8 fs-4"></p>
+                <h1 class="display-5 fw-bold">youtube uploader</h1>
+                <p class="col-md-8 fs-4">about [<%= scrapeNumber - uploadNumber%>] more to upload</p>
                 <iframe name="dummy_iframe" width="0" height="0" style="display: none;"></iframe>
                 <form action="/api/upload" method="POST" target="dummy_iframe">
                     <button class="btn btn-outline-light" type="submit">Upload</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="p-5 mb-4 text-white bg-secondary rounded-3">
+            <div class="container-fluid py-5">
+                <h1 class="display-5 fw-bold">clean</h1>
+                <p class="col-md-8 fs-4">delete empty videos</p>
+                <iframe name="dummy_iframe" width="0" height="0" style="display: none;"></iframe>
+                <form action="/api/clean" method="POST" target="dummy_iframe">
+                    <button class="btn btn-outline-light" type="submit">Clean</button>
                 </form>
             </div>
         </div>
