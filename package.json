@@ -19,6 +19,7 @@
     "http": "^0.0.1-security",
     "node-fetch": "^2.6.5",
     "nodejs-web-scraper": "^6.0.1",
+    "p-limit": "^4.0.0",
     "puppeteer": "^10.4.0",
     "puppeteer-extra": "^3.2.3",
     "puppeteer-extra-plugin-stealth": "^2.9.0",
