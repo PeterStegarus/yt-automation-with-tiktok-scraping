@@ -3,8 +3,8 @@ const downloadVidFromUrl = require("./download-vid-from-url.js");
 const colors = require('colors');
 
 const timeout = 60000;
-const minTimeout503 = 1000
-const maxTimeout503 = 35000;
+const minTimeout503 = 100
+const maxTimeout503 = 3000;
 const height = 900;
 const width = 900;
 
