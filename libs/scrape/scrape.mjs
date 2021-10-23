@@ -1,9 +1,10 @@
-const fs = require("fs");
-const tiktokScraper = require("tiktok-scraper");
-const puppeteer = require("puppeteer");
-const downloadTiktok = require("./download-tiktok.js");
-const vid = require("../objects/scraped-vid.js");
-const colors = require('colors');
+import fs from "fs";
+import tiktokScraper from "tiktok-scraper";
+import puppeteer from 'puppeteer';
+import pLimit from 'p-limit';
+import downloadTiktok from "./download-tiktok.js";
+import vid from "../objects/scraped-vid.js";
+import colors from 'colors';
 
 async function scrapeInit(category, browser) {
     console.log(`Starting scraping [${category}]`.bgYellow);
@@ -15,8 +16,9 @@ async function scrapeInit(category, browser) {
     console.log(`Done scraping [${category}]`.bgGreen);
 }
 
-async function downloadVids(browser, category, vids, logVids, downloadPath) {
+async function downloadVids(browser, category, vids, logVids, downloadPath, concurrentVidsCount) {
     const promises = [];
+    const limit = pLimit(concurrentVidsCount);
 
     for (const i in vids) {
         let { webVideoUrl: url, text: description } = vids[i];
@@ -30,7 +32,7 @@ async function downloadVids(browser, category, vids, logVids, downloadPath) {
         console.log(`New entry [${description.substring(0, 10)}..] in [${category}]`.cyan);
         const video = new vid(`${downloadPath}/${description}.mp4`, description, category, ttdownloaderUrl);
         // await downloadTiktok(browser, video, i, logVids, category);
-        promises.push(downloadTiktok(browser, video, i, logVids, category));
+        promises.push(limit(() => downloadTiktok(browser, video, i, logVids, category)));
     }
 
     await Promise.all(promises);
@@ -45,13 +47,13 @@ async function scrape(browser, category, downloadPath) {
     const vids = [...data.collector];
     const rawLogs = fs.readFileSync(downloadPath + "/logs.txt");
     const logVids = JSON.parse(rawLogs);
-    await downloadVids(browser, category, vids, logVids, downloadPath);
+    await downloadVids(browser, category, vids, logVids, downloadPath, parseInt(process.env.CONCURRENT_VIDS_COUNT));
     fs.writeFileSync(downloadPath + "/logs.txt", JSON.stringify(logVids));
 }
 
 const puppeteerOptions = {
     executablePath: "/usr/bin/google-chrome-stable",
-    headless: true,
+    headless: false,
 };
 
 async function scrapeAll(toggleIsScraping) {
@@ -70,4 +72,4 @@ async function scrapeAll(toggleIsScraping) {
         });
 }
 
-module.exports = scrapeAll;
+export default scrapeAll;
