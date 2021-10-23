@@ -37,7 +37,7 @@ async function uploadVid(credentials, vid, category, index, localVidsNo) {
             console.error(`${error}. `.red + `[${category}] reached upload limit. Skipping.\n`);
             return false;
         }
-        if (error.toString().search("does not exist or is not readable")) {
+        if (error.toString().search("does not exist or is not readable") != -1) {
             console.log(`${error}. `.red + `Skipping vid`);
             return true;
         }
