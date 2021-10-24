@@ -1,10 +1,13 @@
 import fs from "fs";
 import tiktokScraper from "tiktok-scraper";
-import puppeteer from 'puppeteer';
+import puppeteer from 'puppeteer-extra';
+import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 import pLimit from 'p-limit';
-import downloadTiktok from "./download-tiktok-from-tikmate.js";
+import downloadTiktok from "./download-tiktok.js";
 import vid from "../objects/scraped-vid.js";
 import colors from 'colors';
+
+puppeteer.use(StealthPlugin())
 
 async function scrapeInit(category, browser) {
     console.log(`Starting scraping [${category}]`.bgYellow);

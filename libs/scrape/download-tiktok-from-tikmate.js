@@ -6,6 +6,10 @@ const timeout = 60000;
 const height = 900;
 const width = 900;
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 async function downloadTiktok(browser, video, index, logVids, category) {
     let page;
     try {
@@ -21,14 +25,16 @@ async function downloadTiktok(browser, video, index, logVids, category) {
         let downloadUrl = await page.$eval('a.abutton.is-success.is-fullwidth[onclick]', el => el.getAttribute("href"));
         downloadUrl = "https://tikmate.online" + downloadUrl;
 
-        // await page._client.send('Page.setDownloadBehavior', {
-        //     behavior: 'allow',
-        //     downloadPath: video.path
-        // });
-        // var button = await page.$('a.abutton.is-success.is-fullwidth[onclick]');
-        // await button.evaluate(b => b.click());
+        await page._client.send('Page.setDownloadBehavior', {
+            behavior: 'allow',
+            downloadPath: "./hatz"
+        });
+        var button = await page.$('a.abutton.is-success.is-fullwidth[onclick]');
+        await button.evaluate(b => b.click());
 
-        downloadVidFromDirectUrl(downloadUrl, video, index, logVids, category);
+
+        // downloadVidFromDirectUrl(downloadUrl, video, index, logVids, category);
+        await sleep(8000);
         await page.close();
 
 

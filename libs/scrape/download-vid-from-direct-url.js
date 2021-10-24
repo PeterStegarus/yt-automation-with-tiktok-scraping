@@ -10,8 +10,9 @@ async function downloadVidFromDirectUrl(url, video, index, logVids, category) {
     let file = fs.createWriteStream(video.path);
     https.get(url, function (response) {
         if (response.statusCode == 429) {
-            sleep(10000);
-            await downloadVidFromDirectUrl(url, video, index, logVids, category);
+            // sleep(10000);
+            // await downloadVidFromDirectUrl(url, video, index, logVids, category);
+            console.log(`Flagged. Skipping [${index}] in [${category}]`.bgRed);
             return;
         }
         response.pipe(file);
