@@ -1,8 +1,6 @@
 node_modules/
 videos/[^.]*
-config/.env
 config/*
 test.js
-tmp
+tmp-data-dir/
 data-dirs/
-data-dirs-backup/

@@ -1,38 +1,32 @@
 Required files examples
 
-
-
-config/.env
-
-    VIDEOS_PATH=./videos
-
-
-
 config/config.json
 
     {
-        "uploadNumber": 1,
-        "scrapeNumber": 142
-    }
-
-
-
-config/accounts.json
-
-    [
-        {
-            "category":"cars",
-            "email":"cars@gmail.com",
-            "pass":"password",
-            "recoveryEmail":"recoveryEmail@gmail.com"
+        "videosPath": "./videos",
+        "scrapeNumber": 10,
+        "concurrentVidsCount": 3,
+        "puppeteerOptions": {
+            "userDataDir": "./tmp-data-dir",
+            "executablePath": "/usr/bin/google-chrome-stable",
+            "headless": true,
+            "args": ["--disable-web-security", "--allow-running-insecure-content"]
         },
-        {
-            "category":"food",
-            "email":"food@gmail.com",
-            "pass":"password",
-            "recoveryEmail":"recoveryEmail@gmail.com"
-        }
-    ]
+        "accounts": [
+            {
+                "category": "games",
+                "email": "games@gmail.com",
+                "pass": "password",
+                "recoveryEmail": "recovery@gmail.com"
+            },
+            {
+                "category": "cars",
+                "email": "cars@gmail.com",
+                "pass": "password",
+                "recoveryEmail": "recovery@gmail.com"
+            }
+        ]
+    }
 
 
 

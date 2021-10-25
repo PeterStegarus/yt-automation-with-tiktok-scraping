@@ -1,5 +1,5 @@
-import dotenv from 'dotenv'
-dotenv.config({ path: "./config/.env" });
+// import dotenv from 'dotenv'
+// dotenv.config({ path: "./config/.env" });
 import express from "express";
 import ejs from "ejs";
 import fs from "fs";
@@ -20,11 +20,12 @@ let isScraping = false;
 let isUploading = false;
 
 app.get("/", function (req, res) {
-    let uploadNumber = fs.readFileSync(`${process.env.VIDEOS_PATH}/cars/upload-index.txt`);
-    let scrapeNumber = JSON.parse(fs.readFileSync("./config/config.json")).scrapeNumber;
+    const cfg = JSON.parse(fs.readFileSync("./config/config.json"));
+    let uploadedNumber = fs.readFileSync(`${cfg.videosPath}/cars/upload-index.txt`);
+    let scrapedNumber = JSON.parse(fs.readFileSync("./config/config.json")).scrapeNumber;
     res.render("index", {
-        scrapeNumber: scrapeNumber,
-        uploadNumber: uploadNumber
+        scrapeNumber: scrapedNumber,
+        uploadNumber: uploadedNumber
     });
 })
 

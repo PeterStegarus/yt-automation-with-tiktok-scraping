@@ -10,7 +10,7 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-async function downloadTiktok(browser, video, index, logVids, category) {
+async function downloadTiktok(browser, video, index, logVids, cfg) {
     let page;
     try {
         page = await browser.newPage();
@@ -33,7 +33,7 @@ async function downloadTiktok(browser, video, index, logVids, category) {
         await button.evaluate(b => b.click());
 
 
-        // downloadVidFromDirectUrl(downloadUrl, video, index, logVids, category);
+        // downloadVidFromDirectUrl(downloadUrl, video, index, logVids, cfg);
         await sleep(8000);
         await page.close();
 
@@ -41,7 +41,7 @@ async function downloadTiktok(browser, video, index, logVids, category) {
     } catch (error) {
         await page.close();
         console.log(`Error downloading [${index}] [${category}]. [`.red + error.white + "]".red + " Retrying");
-        await downloadTiktok(browser, video, index, logVids, category);
+        await downloadTiktok(browser, video, index, logVids, cfg);
     }
 }
 

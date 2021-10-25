@@ -6,19 +6,17 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-async function downloadVidFromDirectUrl(url, video, index, logVids, category) {
+async function downloadVidFromDirectUrl(url, video, index, logVids, cfg) {
     let file = fs.createWriteStream(video.path);
     https.get(url, function (response) {
         if (response.statusCode == 429) {
-            // sleep(10000);
-            // await downloadVidFromDirectUrl(url, video, index, logVids, category);
-            console.log(`Flagged. Skipping [${index}] in [${category}]`.bgRed);
+            console.log(`Flagged. Skipping [${index}] in [${video.category}]`.bgRed);
             return;
         }
         response.pipe(file);
-        console.log(`Downloaded vid [${index}] [${video.title.substring(0, 10)}] in [${category}] with [${response.statusCode}]`.green);
+        console.log(`Downloaded vid [${index}] [${video.title.substring(0, 10)}] in [${video.category}] with [${response.statusCode}]`.green);
         logVids.push(video);
-        fs.writeFileSync(`${process.env.VIDEOS_PATH}/${category}` + "/logs.txt", JSON.stringify(logVids));
+        fs.writeFileSync(`${cfg.videosPath}/${video.category}` + "/logs.txt", JSON.stringify(logVids));
     });
 }
 
