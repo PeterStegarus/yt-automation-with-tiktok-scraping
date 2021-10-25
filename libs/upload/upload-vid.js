@@ -1,5 +1,5 @@
 const fs = require("fs");
-const { upload } = require("youtube-videos-uploader");
+const { upload } = require("./youtube-videos-uploader.js");
 const colors = require('colors');
 
 var status = false;
@@ -34,7 +34,7 @@ async function uploadVid(credentials, vid, index, localVidsNo, cfg) {
             return true;
         }
         console.error(`${error}.`.red + `Retrying [${category}]`);
-        return await uploadVid(credentials, vid, index, localVidsNo);
+        return await uploadVid(credentials, vid, index, localVidsNo, cfg);
     }
 }
 
