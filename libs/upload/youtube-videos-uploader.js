@@ -10,8 +10,8 @@ const maxTitleLen = 100
 const maxDescLen = 5000
 
 const timeout = 20000
-const height = 893
-const width = 912
+const height = 900
+const width = 900
 
 let browser, page
 
