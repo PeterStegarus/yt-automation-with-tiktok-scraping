@@ -3,8 +3,8 @@ const downloadVidFromUrl = require("./download-vid-from-url.js");
 const colors = require('colors');
 
 const timeout = 60000;
-const minTimeout503 = 2000
-const maxTimeout503 = 6000;
+let minTimeout503 = 100
+let maxTimeout503 = 4000;
 const height = 900;
 const width = 900;
 
@@ -26,6 +26,11 @@ async function check503(page, category, index) {
 
 async function downloadTiktok(browser, video, index, logVids, cfg) {
     let page;
+    const concurrentVidsCount = cfg.concurrentVidsCount;
+    if (minTimeout503 === 1000) {
+        minTimeout503 *= concurrentVidsCount ^ 1.3;
+        maxTimeout503 *= concurrentVidsCount ^ 1.15;
+    }
     try {
         page = await browser.newPage();
         await page.setDefaultTimeout(timeout);
