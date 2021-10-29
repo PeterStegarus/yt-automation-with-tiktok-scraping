@@ -54,7 +54,7 @@ async function scrapeAll(toggleIsScraping) {
     const cfg = JSON.parse(fs.readFileSync("./config/config.json"));
     let puppeteerOptions = cfg.puppeteerOptions;
     puppeteerOptions.userDataDir = "./data-dirs/scrape";
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch(puppeteerOptions);
 
     const accounts = cfg.accounts;
     const promises = [];
