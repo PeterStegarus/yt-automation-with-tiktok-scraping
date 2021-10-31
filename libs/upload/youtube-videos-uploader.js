@@ -88,7 +88,8 @@ async function upload(credentials, videos, puppeteerLaunch) {
       return uploadedYTLink
     } catch (error) {
       if (error.toString().search("aria-label=\"Tags\"") != -1 || error.toString().search("does not exist or is not readable") != -1) {
-        throw(error);
+        await browser.close();
+        throw (error);
       }
       console.log(error + ". Trying to login")
     }
@@ -340,7 +341,7 @@ async function uploadVideo(videoJSON) {
   await page.goto(uploadURL)
 
   if ((await page.$('input[type="email"]')) !== null) {
-    throw("Not logged in");
+    throw ("Not logged in");
   }
 
   const closeBtnXPath = '//*[normalize-space(text())=\'Close\']'
