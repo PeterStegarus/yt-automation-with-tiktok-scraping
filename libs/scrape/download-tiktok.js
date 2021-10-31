@@ -1,5 +1,6 @@
 const puppeteer = require("puppeteer");
 const downloadVidFromUrl = require("./download-vid-from-url.js");
+const fs = require('fs');
 const colors = require('colors');
 
 const timeout = 60000;
@@ -24,6 +25,13 @@ async function check503(page, category, index) {
     }
 }
 
+async function checkInvalidUrl(page, category, index) {
+    const url = page.url();
+    if (url.search("url=") === -1) {
+        throw `[${category}] [${index}] Invalid URL`;
+    }
+}
+
 async function downloadTiktok(browser, video, index, logVids, cfg) {
     let page;
     const concurrentVidsCount = cfg.concurrentVidsCount;
@@ -39,6 +47,7 @@ async function downloadTiktok(browser, video, index, logVids, cfg) {
         await Promise.all([
             page.waitForNavigation(),
             check503(page, video.category, index),
+            checkInvalidUrl(page, video.category, index),
             page.waitForSelector('.download-link')
         ]);
 
@@ -50,6 +59,13 @@ async function downloadTiktok(browser, video, index, logVids, cfg) {
         downloadVidFromUrl(downloadLink, video, index, logVids, cfg);
     } catch (error) {
         await page.close();
+        if (error.toString().search("Invalid URL") != -1) {
+            console.log(error.red + " Skipped".white);
+            logVids.push(video);
+            // will get skipped by uploader and won't get constantly added to the scraping list
+            fs.writeFileSync(`${cfg.videosPath}/${video.category}` + "/logs.txt", JSON.stringify(logVids));
+            return;
+        }
         const randomTimeout = timeout503Random();
         // console.error(`${error}.`.yellow + ` Retrying [${index}] in [${category}] in [${randomTimeout}ms]`);
         await sleep(randomTimeout);
