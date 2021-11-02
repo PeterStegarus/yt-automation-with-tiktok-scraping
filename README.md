@@ -50,3 +50,6 @@ Temporary workaround example. Run in the ./videos directory:
     category='cars'
     
     mkdir $category && touch $category/logs.txt $category/upload-index.txt && echo '[]' >> $category/logs.txt && echo 0 >> $category/upload-index.txt
+
+
+You might consider setting your default upload visibility to private. Google doesn't like automated authentication so you might also consider logging in manually when the upload page first shows up. Cookies are saved locally so it should keep you logged in for further testing.
