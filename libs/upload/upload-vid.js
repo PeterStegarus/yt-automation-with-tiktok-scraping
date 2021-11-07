@@ -12,7 +12,7 @@ async function uploadVid(credentials, vid, index, localVidsNo, cfg) {
     status = false;
     const desc = `#shorts #${vid.category}\n\nWe post daily videos of ${vid.category} and related content.\n\nDisclaimer: The video clips posted on this channel are not owned by the channel itself. This is only a compilations channel.\n\nIf you are the owner of this video and feel like you haven’t been duly credited, please contact me here, and I will get back to you ASAP.\n`;
     console.log(`Uploading in [${vid.category}]: [${(vid.title).substring(0, 10)}..]`.yellow);
-    const video = { path: vid.path, title: vid.title, description: vid.title + "\n\n" + desc, language: "english", tags: [vid.category, "shorts", "#shorts"], onSuccess: onVideoUploadSuccess }
+    const video = { path: vid.path, title: vid.title.substring(0,99), description: vid.title + "\n\n" + desc, language: "english", tags: [vid.category, "shorts", "#shorts"], onSuccess: onVideoUploadSuccess }
 
     try {
         await upload(credentials, [video], puppeteerOptions).then((msg) => {
